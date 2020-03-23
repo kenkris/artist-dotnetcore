@@ -10,7 +10,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/a94cf15d5406d2c2dcd91e266f78b1eb
+      CodeUri: s3://serlessdeploy/355a176080b2219f183ae5c951b1c822
       Handler: Lambda::Lambda.Function::FunctionHandler
       Runtime: dotnetcore2.1
       Environment:
@@ -21,6 +21,21 @@ Resources:
           Type: Api
           Properties:
             Path: /hello
+            Method: get
+  TesterFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://serlessdeploy/9992374b2e6c7158a50e7202ce91b556
+      Handler: Lambda::Lambda.Tester::FunctionHandler
+      Runtime: dotnetcore2.1
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        TesterEvent:
+          Type: Api
+          Properties:
+            Path: /tester
             Method: get
 Outputs:
   HelloWorldApi:
