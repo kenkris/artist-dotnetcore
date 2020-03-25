@@ -39,6 +39,21 @@ Resources:
           Properties:
             Path: /tester
             Method: get
+  GetArtist:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/Lambda/
+      Handler: Lambda::Lambda.Artist::GetArtist
+      Runtime: dotnetcore2.1
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        TesterEvent:
+          Type: Api
+          Properties:
+            Path: /artist
+            Method: get
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function

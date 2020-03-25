@@ -37,6 +37,21 @@ Resources:
           Properties:
             Path: /tester
             Method: get
+  GetArtist:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetArtist
+      Handler: Lambda::Lambda.Artist::FunctionHandler
+      Runtime: dotnetcore2.1
+      Environment:
+        Variables:
+          PARAM1: VALUE
+      Events:
+        TesterEvent:
+          Type: Api
+          Properties:
+            Path: /artist
+            Method: get
 Outputs:
   HelloWorldApi:
     Description: API Gateway endpoint URL for Prod stage for Hello World function
