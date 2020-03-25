@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
@@ -11,12 +12,12 @@ namespace Lambda
 {
     public class Artist
     {
-        private AmazonDynamoDBClient _dbClient = new AmazonDynamoDBClient();
+        private readonly AmazonDynamoDBClient _dbClient = new AmazonDynamoDBClient();
         
-        public APIGatewayProxyResponse GetArtist(APIGatewayProxyRequest request, ILambdaContext context)
+        public async Task<APIGatewayProxyResponse> GetArtist(APIGatewayProxyRequest request, ILambdaContext context)
         {
             // TODO determine getAll or byId
-            var result = _getAllArtist();
+            var result = await _getAllArtist();
                 
             return new APIGatewayProxyResponse
             {
@@ -26,7 +27,7 @@ namespace Lambda
             };
         }
 
-        private List<ArtistModel> _getAllArtist()
+        private async Task<List<ArtistModel>> _getAllArtist()
         {
             var query = new QueryRequest
             {
@@ -37,7 +38,7 @@ namespace Lambda
                     { ":artistStatic", new AttributeValue { S = "Artist" } }
                 }
             };
-            var queryResult = _dbClient.QueryAsync(query);
+            var queryResult = await _dbClient.QueryAsync(query);
 
             /*foreach (var item in queryResult.Result)
             {

@@ -10,7 +10,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/5d016e47a44f6a0b67b3efe6c7662f08
+      CodeUri: s3://serlessdeploy/1e4a97c7e60ba45ddf6f0f88bbd3aa7a
       Handler: Lambda::Lambda.Function::FunctionHandler
       Runtime: dotnetcore2.1
       Environment:
@@ -25,7 +25,7 @@ Resources:
   TesterFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/3dfa86b60a5201038f82403505c66b74
+      CodeUri: s3://serlessdeploy/a01353bc2a9ed8aa507ff0e4d5a9edac
       Handler: Lambda::Lambda.Tester::FunctionHandler
       Runtime: dotnetcore2.1
       Environment:
@@ -40,8 +40,8 @@ Resources:
   GetArtist:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/8cbba2662c0723c8cbf729220f8ef106
-      Handler: Lambda::Lambda.Artist::FunctionHandler
+      CodeUri: s3://serlessdeploy/e8acdd9626eeeb4ebe0f57afd027e5f3
+      Handler: Lambda::Lambda.Artist::GetArtist
       Runtime: dotnetcore2.1
       Environment:
         Variables:

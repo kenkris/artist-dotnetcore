@@ -41,7 +41,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: GetArtist
-      Handler: Lambda::Lambda.Artist::FunctionHandler
+      Handler: Lambda::Lambda.Artist::GetArtist
       Runtime: dotnetcore2.1
       Environment:
         Variables:
