@@ -32,6 +32,7 @@ namespace Lambda
             var query = new QueryRequest
             {
                 TableName = "ArtistDB2",
+                IndexName = "sk_gsi_pk-data_gsi_sk-index",
                 KeyConditionExpression = "sk_gsi_pk = :artistStatic",
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
