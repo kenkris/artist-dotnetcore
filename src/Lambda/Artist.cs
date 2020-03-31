@@ -13,12 +13,12 @@ namespace Lambda
     public class Artist
     {
         private readonly AmazonDynamoDBClient _dbClient = new AmazonDynamoDBClient();
-        
+
         public async Task<APIGatewayProxyResponse> GetArtist(APIGatewayProxyRequest request, ILambdaContext context)
         {
             // TODO determine getAll or byId
             var result = await _getAllArtist();
-                
+
             return new APIGatewayProxyResponse
             {
                 Body = JsonConvert.SerializeObject(result),
@@ -41,12 +41,19 @@ namespace Lambda
             };
             var queryResult = await _dbClient.QueryAsync(query);
 
-            /*foreach (var item in queryResult.Result)
+            var result = new List<ArtistModel>();
+            foreach (var item in queryResult.Items)
             {
-                Console.Out.WriteLine(item.Values);
-            }*/
-            
-            return new List<ArtistModel>();
+
+                Console.Out.WriteLine(item["pk"].S);
+
+                result.Add(new ArtistModel
+                {
+                    pk = item["pk"].S
+                });
+            }
+
+            return result;
         }
 
         private ArtistModel _getArtistById(string id)
