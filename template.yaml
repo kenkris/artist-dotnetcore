@@ -39,20 +39,29 @@ Resources:
           Properties:
             Path: /tester
             Method: get
-  GetArtist:
+  GetAllArtist:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./src/Lambda/
-      Handler: Lambda::Lambda.Artist::GetArtist
+      Handler: Lambda::Lambda.Artist::GetAllArtist
       Runtime: dotnetcore2.1
-      Environment:
-        Variables:
-          PARAM1: VALUE
       Events:
         TesterEvent:
           Type: Api
           Properties:
-            Path: /artist
+            Path: /artist/
+            Method: get
+  GetArtistById:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/Lambda/
+      Handler: Lambda::Lambda.Artist::GetArtistById
+      Runtime: dotnetcore2.1
+      Events:
+        TesterEvent:
+          Type: Api
+          Properties:
+            Path: /artist/{id}
             Method: get
 
 Outputs:

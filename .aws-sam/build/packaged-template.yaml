@@ -10,7 +10,7 @@ Resources:
   HelloWorldFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/1569f8042012100602a61d2e72688a20
+      CodeUri: s3://serlessdeploy/78b3eb3a45ea2b0bad2ddbde45c88e42
       Handler: Lambda::Lambda.Function::FunctionHandler
       Runtime: dotnetcore2.1
       Environment:
@@ -25,7 +25,7 @@ Resources:
   TesterFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/157b8b70ff4aea01c2f3c31f2810f8cf
+      CodeUri: s3://serlessdeploy/585981ea191a1663c2a2c921a7a5d280
       Handler: Lambda::Lambda.Tester::FunctionHandler
       Runtime: dotnetcore2.1
       Environment:
@@ -37,20 +37,29 @@ Resources:
           Properties:
             Path: /tester
             Method: get
-  GetArtist:
+  GetAllArtist:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: s3://serlessdeploy/61b81a341b2ed0c3ba4cdeba9c66f64d
-      Handler: Lambda::Lambda.Artist::GetArtist
+      CodeUri: s3://serlessdeploy/9b8c56324b080d07e4849a3f99c4d163
+      Handler: Lambda::Lambda.Artist::GetAllArtist
       Runtime: dotnetcore2.1
-      Environment:
-        Variables:
-          PARAM1: VALUE
       Events:
         TesterEvent:
           Type: Api
           Properties:
-            Path: /artist
+            Path: /artist/
+            Method: get
+  GetArtistById:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://serlessdeploy/36720df98ad2d814a344605e726eaa1a
+      Handler: Lambda::Lambda.Artist::GetArtistById
+      Runtime: dotnetcore2.1
+      Events:
+        TesterEvent:
+          Type: Api
+          Properties:
+            Path: /artist/{id}
             Method: get
 Outputs:
   HelloWorldApi:
