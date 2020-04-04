@@ -26,5 +26,15 @@ namespace Lambda.Response
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
             };
         }
+
+        public static APIGatewayProxyResponse NotImplemented()
+        {
+            return new APIGatewayProxyResponse
+            {
+                Body = JsonConvert.SerializeObject("Method not implemented"),
+                StatusCode = 501,
+                Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
+            };
+        }
     }
 }

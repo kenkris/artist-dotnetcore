@@ -7,6 +7,7 @@ using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
+using Lambda.Models;
 using Lambda.Response;
 using Newtonsoft.Json;
 
@@ -28,6 +29,11 @@ namespace Lambda
         public async Task<APIGatewayProxyResponse> GetAllArtist(APIGatewayProxyRequest request, ILambdaContext context)
         {
             return APIResponse.Ok(await  _fetchAllArtist());
+        }
+
+        public async Task<APIGatewayProxyResponse> GetArtistMembers(APIGatewayProxyRequest request, ILambdaContext context)
+        {
+            return APIResponse.NotImplemented();
         }
 
 
@@ -85,6 +91,12 @@ namespace Lambda
             }
 
             return result;
+        }
+
+        // TODO Implement get artist member function
+        private async Task<List<Person>> _fetchPerson()
+        {
+            return new List<Person>();
         }
     }
 
