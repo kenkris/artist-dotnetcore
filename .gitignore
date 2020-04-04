@@ -402,4 +402,7 @@ __pycache__/
 # should be stored in the .pubxml.user file.
 
 
+### AWS ###
+.aws-sam/
+
 # End of https://www.gitignore.io/api/macos,linux,windows,sublimetext,dotsettings,visualstudio,visualstudiocode
