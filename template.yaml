@@ -45,6 +45,8 @@ Resources:
       CodeUri: ./src/Lambda/
       Handler: Lambda::Lambda.Artist::GetAllArtist
       Runtime: dotnetcore2.1
+      Role: arn:aws:iam::845376454911:role/service-role/MessageScan-role-av1nmp7k
+      Timeout: 30
       Events:
         TesterEvent:
           Type: Api
@@ -57,6 +59,8 @@ Resources:
       CodeUri: ./src/Lambda/
       Handler: Lambda::Lambda.Artist::GetArtistById
       Runtime: dotnetcore2.1
+      Role: arn:aws:iam::845376454911:role/service-role/MessageScan-role-av1nmp7k
+      Timeout: 30
       Events:
         TesterEvent:
           Type: Api
