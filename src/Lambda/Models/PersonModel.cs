@@ -4,7 +4,7 @@ using Lambda.Enums;
 namespace Lambda.Models
 {
     [DynamoDBTable("ArtistDB2")]
-    public class Person
+    public class PersonModel
     {
         [DynamoDBHashKey] public string pk;
         [DynamoDBHashKey, DynamoDBRangeKey]public string sk_gsi_pk;
