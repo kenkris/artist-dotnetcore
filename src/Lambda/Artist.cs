@@ -45,10 +45,15 @@ namespace Lambda
             var query = new QueryRequest
             {
                 TableName = ArtistTable,
-                KeyConditionExpression = "PK = :artistId",
+                KeyConditionExpression = "PK = :artistId and #sk = :artistStatic",
+                ExpressionAttributeNames = new Dictionary<string, string>
+                {
+                    { "#sk", "SK-GSI-PK" }
+                },
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
-                    { ":artistId", new AttributeValue { S = id } }
+                    { ":artistId", new AttributeValue { S = id } },
+                    { ":artistStatic", new AttributeValue { S = "Artist" } }
                 }
             };
 
@@ -61,7 +66,7 @@ namespace Lambda
             return new ArtistModel
             {
                 PK = item["PK"].S,
-                SK_GSI_PK = item["SK_GSI_PK"].S,
+                SK_GSI_PK = item["SK-GSI-PK"].S,
                 Data = item["Data"].S,
                 Name = item["Name"].S
             };
