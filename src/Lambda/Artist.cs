@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
@@ -15,6 +16,8 @@ namespace Lambda
     {
         private readonly AmazonDynamoDBClient _dbClient = new AmazonDynamoDBClient();
         private const string ArtistTable = "ArtistDB3";
+        private const string GSI = "SK-GSI-PK";
+        private const string GSI_DATA_INDEX = "SK-GSI-PK-Data-index";
 
         public async Task<APIGatewayProxyResponse> GetArtistById(APIGatewayProxyRequest request, ILambdaContext context)
         {
@@ -48,7 +51,7 @@ namespace Lambda
                 KeyConditionExpression = "PK = :artistId and #sk = :artistStatic",
                 ExpressionAttributeNames = new Dictionary<string, string>
                 {
-                    { "#sk", "SK-GSI-PK" }
+                    { "#sk", GSI }
                 },
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
@@ -77,11 +80,11 @@ namespace Lambda
             var query = new QueryRequest
             {
                 TableName = ArtistTable,
-                IndexName = "SK-GSI-PK-Data-index",
+                IndexName = GSI_DATA_INDEX,
                 KeyConditionExpression = "#key = :artistStatic",
                 ExpressionAttributeNames = new Dictionary<string, string>
                 {
-                    { "#key", "SK-GSI-PK" }
+                    { "#key", GSI }
                 },
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
@@ -118,15 +121,19 @@ namespace Lambda
             var query = new QueryRequest
             {
                 TableName = ArtistTable,
-                IndexName = "sk_gsi_pk-data_gsi_sk-index",
-                KeyConditionExpression = "sk_gsi_pk = :albumStatic and data_gsi_sk = :artistId",
+                IndexName = GSI_DATA_INDEX,
+                KeyConditionExpression = "#key = :albumStatic and data_gsi_sk = :artistId",
+                ExpressionAttributeNames = new Dictionary<string, string>
+                {
+                    { "#key", GSI }
+                },
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
                     { ":albumStatic", new AttributeValue { S = "Album" } },
-                    { ":artistId", new AttributeValue { S = id} }
+                    { ":artistId", new AttributeValue { S = $"Artist#{id}"} }
                 }
             };
-            var queryResult = await _dbClient.QueryAsync(query);
+            var queryResult = await _dbClient.QueryAsync(query);j
 
             var result = new List<AlbumModel>();
             foreach (var item in queryResult.Items)
