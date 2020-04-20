@@ -1,9 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Amazon.DynamoDBv2;
-using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
@@ -12,13 +9,8 @@ using Lambda.Response;
 
 namespace Lambda
 {
-    public class Artist
+    public class ArtistService : ArtistDB3Base
     {
-        private readonly AmazonDynamoDBClient _dbClient = new AmazonDynamoDBClient();
-        private const string ArtistTable = "ArtistDB3";
-        private const string GSI = "SK-GSI-PK";
-        private const string GSI_DATA_INDEX = "SK-GSI-PK-Data-index";
-
         public async Task<APIGatewayProxyResponse> GetArtistById(APIGatewayProxyRequest request, ILambdaContext context)
         {
             if (!request.PathParameters.TryGetValue("id", out var artistId))
@@ -60,7 +52,7 @@ namespace Lambda
                 }
             };
 
-            var queryResult = await _dbClient.QueryAsync(query);
+            var queryResult = await DbClient.QueryAsync(query);
 
             if (queryResult.Items.Count != 1)
                 return new ArtistModel();
@@ -92,7 +84,7 @@ namespace Lambda
                 },
 
             };
-            var queryResult = await _dbClient.QueryAsync(query);
+            var queryResult = await DbClient.QueryAsync(query);
 
             var result = new List<ArtistModel>();
             foreach (var item in queryResult.Items)
@@ -133,7 +125,7 @@ namespace Lambda
                     { ":artistId", new AttributeValue { S = $"Artist#{id}"} }
                 }
             };
-            var queryResult = await _dbClient.QueryAsync(query);j
+            var queryResult = await DbClient.QueryAsync(query);
 
             var result = new List<AlbumModel>();
             foreach (var item in queryResult.Items)
@@ -152,12 +144,8 @@ namespace Lambda
         }
     }
 
-    [DynamoDBTable("ArtistDB2")]
-    public class ArtistModel
+    public class ArtistModel : BaseModel
     {
-        [DynamoDBHashKey] public string PK;
-        [DynamoDBHashKey, DynamoDBRangeKey]public string SK_GSI_PK;
-        [DynamoDBRangeKey] public string Data;
         public string Name;
     }
 }

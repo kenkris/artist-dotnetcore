@@ -43,7 +43,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./src/Lambda/
-      Handler: Lambda::Lambda.Artist::GetAllArtist
+      Handler: Lambda::Lambda.ArtistService::GetAllArtist
       Runtime: dotnetcore2.1
       Role: arn:aws:iam::845376454911:role/service-role/MessageScan-role-av1nmp7k
       Timeout: 30
@@ -57,7 +57,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./src/Lambda/
-      Handler: Lambda::Lambda.Artist::GetArtistById
+      Handler: Lambda::Lambda.ArtistService::GetArtistById
       Runtime: dotnetcore2.1
       Role: arn:aws:iam::845376454911:role/service-role/MessageScan-role-av1nmp7k
       Timeout: 30
@@ -71,7 +71,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       CodeUri: ./src/Lambda/
-      Handler: Lambda::Lambda.Artist::GetArtistAlbums
+      Handler: Lambda::Lambda.ArtistService::GetArtistAlbums
       Runtime: dotnetcore2.1
       Role: arn:aws:iam::845376454911:role/service-role/MessageScan-role-av1nmp7k
       Timeout: 30

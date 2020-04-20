@@ -4,13 +4,11 @@ using Lambda.Enums;
 namespace Lambda.Models
 {
     [DynamoDBTable("ArtistDB2")]
-    public class PersonModel
+    public class PersonModel : BaseModel
     {
-        [DynamoDBHashKey] public string pk;
-        [DynamoDBHashKey, DynamoDBRangeKey]public string sk_gsi_pk;
-        [DynamoDBRangeKey] public string data_gsi_sk;
-        public string Name;
-        public string PlaceOfBirth;
-        public Gender Gender;
+        public string FirstName;
+        public string LastName;
+        public string PlaceOfBirth; // TODO implement in db
+        public Gender Gender; // TODO implement in db
     }
 }
