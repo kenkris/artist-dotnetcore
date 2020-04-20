@@ -31,9 +31,11 @@ namespace Lambda
 
         public async Task<APIGatewayProxyResponse> GetArtistAlbums(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            return APIResponse.NotImplemented();
-        }
+            if (!request.PathParameters.TryGetValue("id", out var artistId))
+                return APIResponse.ClientError("Missing id parameter");
 
+            return APIResponse.Ok(await _fetchArtistAlbums(artistId));
+        }
 
         private async Task<ArtistModel> _fetchArtistById(string id)
         {
@@ -114,10 +116,11 @@ namespace Lambda
             {
                 TableName = ArtistTable,
                 IndexName = GSI_DATA_INDEX,
-                KeyConditionExpression = "#key = :albumStatic and data_gsi_sk = :artistId",
+                KeyConditionExpression = "#key = :albumStatic and #sk = :artistId",
                 ExpressionAttributeNames = new Dictionary<string, string>
                 {
-                    { "#key", GSI }
+                    { "#key", GSI },
+                    { "#sk" , "Data" }
                 },
                 ExpressionAttributeValues = new Dictionary<string, AttributeValue>
                 {
@@ -132,11 +135,11 @@ namespace Lambda
             {
                 result.Add(new AlbumModel
                 {
-                    pk = item["pk"].S,
-                    sk_gsi_pk = item["sk_gsi_pk"].S,
-                    data_gsi_sk = item["data_gsi_sk"].S,
-                    name = item["name"].S,
-                    recoredYear = item["recoredYear"].S
+                    PK = item["PK"].S,
+                    SK_GSI_PK = item[GSI].S,
+                    Data = item["Data"].S,
+                    Name = item["Name"].S,
+                    YOR = item["YOR"].S
                 });
             }
 
