@@ -10,8 +10,6 @@ namespace Lambda.Response
 
         public static APIGatewayProxyResponse Ok(object data)
         {
-            Console.WriteLine("DEBUG!!!:");
-            Console.WriteLine(data.ToString());
             return new APIGatewayProxyResponse
             {
                 Body = JsonConvert.SerializeObject(data),

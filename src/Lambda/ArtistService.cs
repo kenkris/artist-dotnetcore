@@ -34,7 +34,6 @@ namespace Lambda
             if (!request.PathParameters.TryGetValue("id", out var artistId))
                 return APIResponse.ClientError("Missing id parameter");
 
-            Console.WriteLine("ABOUT TO FETCH");
             return APIResponse.Ok(await _artistAccess.FetchArtistMembers(artistId));
         }
 

@@ -76,7 +76,6 @@ namespace Lambda.Access
             return result;
         }
 
-        // TODO Implement get artist member function
         public async Task<List<PersonModel>> FetchArtistMembers(string id)
         {
             var query = new QueryRequest
@@ -93,29 +92,26 @@ namespace Lambda.Access
                     { ":memberPersonStatic", new AttributeValue { S = "MemberPerson#" } }
                 }
             };
-            Console.WriteLine(query.ToString());
-            Console.WriteLine(query.KeyConditionExpression);
+
             var queryResult = await DbClient.QueryAsync(query);
 
-            Console.WriteLine("QUERY DONE!");
             var result = new List<PersonModel>();
+            var personAccess = new PersonAccess();
             foreach (var item in queryResult.Items)
             {
-                Console.WriteLine(JsonConvert.SerializeObject(item));
-
-                // TODO get person
-
-
-
-
-                /*result.Add(new PersonModel()
+                var personId = "";
+                try
                 {
-                    PK = item["PK"].S,
-                    SK_GSI_PK = item[GSI].S,
-                    Data = item["Data"].S,
-                    FirstName = item["FirstName"].S,
-                    LastName = item["LastName"].S
-                });*/
+                    personId = item[GSI].S.Split("#")[1];
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Could not extract personId " + e.Message);
+                }
+
+                var person = await personAccess.FetchPerson(personId);
+                if(!string.IsNullOrEmpty(person.PK))
+                    result.Add(person);
             }
 
             return result;
