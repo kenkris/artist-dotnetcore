@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2.Model;
 using Lambda.Models;
+using Newtonsoft.Json;
 
 namespace Lambda.Access
 {
@@ -77,10 +79,48 @@ namespace Lambda.Access
         // TODO Implement get artist member function
         public async Task<List<PersonModel>> FetchArtistMembers(string id)
         {
-            return new List<PersonModel>();
+            var query = new QueryRequest
+            {
+                TableName = ArtistTable,
+                KeyConditionExpression = "PK = :artistId and begins_with(#sk, :memberPersonStatic)",
+                ExpressionAttributeNames = new Dictionary<string, string>
+                {
+                    { "#sk", GSI }
+                },
+                ExpressionAttributeValues = new Dictionary<string, AttributeValue>
+                {
+                    { ":artistId", new AttributeValue { S = id } },
+                    { ":memberPersonStatic", new AttributeValue { S = "MemberPerson#" } }
+                }
+            };
+            Console.WriteLine(query.ToString());
+            Console.WriteLine(query.KeyConditionExpression);
+            var queryResult = await DbClient.QueryAsync(query);
+
+            Console.WriteLine("QUERY DONE!");
+            var result = new List<PersonModel>();
+            foreach (var item in queryResult.Items)
+            {
+                Console.WriteLine(JsonConvert.SerializeObject(item));
+
+                // TODO get person
+
+
+
+
+                /*result.Add(new PersonModel()
+                {
+                    PK = item["PK"].S,
+                    SK_GSI_PK = item[GSI].S,
+                    Data = item["Data"].S,
+                    FirstName = item["FirstName"].S,
+                    LastName = item["LastName"].S
+                });*/
+            }
+
+            return result;
         }
 
-        // TODO Implement get artist albums function
         public async Task<List<AlbumModel>> FetchArtistAlbums(string id)
         {
             var query = new QueryRequest

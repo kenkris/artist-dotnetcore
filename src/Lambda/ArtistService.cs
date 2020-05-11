@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Amazon.Lambda.APIGatewayEvents;
 using Amazon.Lambda.Core;
@@ -30,7 +31,11 @@ namespace Lambda
 
         public async Task<APIGatewayProxyResponse> GetArtistMembers(APIGatewayProxyRequest request, ILambdaContext context)
         {
-            return APIResponse.NotImplemented();
+            if (!request.PathParameters.TryGetValue("id", out var artistId))
+                return APIResponse.ClientError("Missing id parameter");
+
+            Console.WriteLine("ABOUT TO FETCH");
+            return APIResponse.Ok(await _artistAccess.FetchArtistMembers(artistId));
         }
 
         public async Task<APIGatewayProxyResponse> GetArtistAlbums(APIGatewayProxyRequest request, ILambdaContext context)

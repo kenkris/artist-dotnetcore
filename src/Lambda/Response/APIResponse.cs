@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Amazon.Lambda.APIGatewayEvents;
 using Newtonsoft.Json;
@@ -9,6 +10,8 @@ namespace Lambda.Response
 
         public static APIGatewayProxyResponse Ok(object data)
         {
+            Console.WriteLine("DEBUG!!!:");
+            Console.WriteLine(data.ToString());
             return new APIGatewayProxyResponse
             {
                 Body = JsonConvert.SerializeObject(data),

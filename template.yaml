@@ -81,6 +81,20 @@ Resources:
           Properties:
             Path: /artistalbum/{id}
             Method: get
+  GetArtistMembers:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/Lambda/
+      Handler: Lambda::Lambda.ArtistService::GetArtistMembers
+      Runtime: dotnetcore2.1
+      Role: arn:aws:iam::845376454911:role/service-role/MessageScan-role-av1nmp7k
+      Timeout: 30
+      Events:
+        TesterEvent:
+          Type: Api
+          Properties:
+            Path: /artistmembers/{id}
+            Method: get
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
