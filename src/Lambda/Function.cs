@@ -34,7 +34,7 @@ namespace Lambda
             var location = await GetCallingIP();
             var body = new Dictionary<string, string>
             {
-                { "message", "hello world, updated" },
+                { "message", "hello world, updated1234" },
                 { "location", location }
             };
 
