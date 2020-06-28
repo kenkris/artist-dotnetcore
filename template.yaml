@@ -9,6 +9,18 @@ Globals:
     Timeout: 10
 
 Resources:
+
+  ArtistMan:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors: "'*'"
+      Auth:
+        DefaultAuthorizer: artistAuth1
+        Authorizers:
+          artistAuth1:
+            UserPoolArn: arn:aws:cognito-idp:eu-central-1:845376454911:userpool/eu-central-1_l19y1ueM5
+
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -22,22 +34,8 @@ Resources:
         HelloWorld:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
+            RestApiId: !Ref ArtistMan
             Path: /hello
-            Method: get
-  TesterFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      CodeUri: ./src/Lambda/
-      Handler: Lambda::Lambda.Tester::FunctionHandler
-      Runtime: dotnetcore2.1
-      Environment:
-        Variables:
-          PARAM1: VALUE
-      Events:
-        TesterEvent:
-          Type: Api
-          Properties:
-            Path: /tester
             Method: get
   GetAllArtist:
     Type: AWS::Serverless::Function
@@ -51,6 +49,7 @@ Resources:
         TesterEvent:
           Type: Api
           Properties:
+            RestApiId: !Ref ArtistMan
             Path: /artist/
             Method: get
   GetArtistById:
@@ -65,6 +64,7 @@ Resources:
         TesterEvent:
           Type: Api
           Properties:
+            RestApiId: !Ref ArtistMan
             Path: /artist/{id}
             Method: get
   GetArtistAlbums:
@@ -79,6 +79,7 @@ Resources:
         TesterEvent:
           Type: Api
           Properties:
+            RestApiId: !Ref ArtistMan
             Path: /artistalbum/{id}
             Method: get
   GetArtistMembers:
@@ -93,19 +94,11 @@ Resources:
         TesterEvent:
           Type: Api
           Properties:
+            RestApiId: !Ref ArtistMan
             Path: /artistmembers/{id}
             Method: get
 
-Outputs:
+#Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn

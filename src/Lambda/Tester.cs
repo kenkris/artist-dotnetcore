@@ -15,15 +15,14 @@ namespace Lambda
                 Message = "Hi from tester",
                 Created = DateTime.Now
             };
-            
+
             return new APIGatewayProxyResponse
             {
                 Body = JsonConvert.SerializeObject(result),
                 StatusCode = 200,
                 Headers = new Dictionary<string, string> { { "Content-Type", "application/json" } }
-            };
+            };;
         }
-
     }
 
     public class TesterResult
